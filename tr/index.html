@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etkileşimli Aile Acil Durum Planlayıcısı</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jsPDF and html2canvas for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Google Fonts:  Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @media print {
+            body {
+                -webkit-print-color-adjust:  exact;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+        .loader {
+            border-top-color: #3498db;
+            -webkit-animation: spinner 1.5s linear infinite;
+            animation:  spinner 1.5s linear infinite;
+        }
+        @-webkit-keyframes spinner {
+            0% { -webkit-transform:  rotate(0deg); }
+            100% { -webkit-transform:  rotate(360deg); }
+        }
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <div class="container mx-auto p-4 sm:p-6 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-600 dark:text-blue-400">Aile Acil Durum Planlayıcısı</h1>
+            <p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Ailenizin güvenliği için hazırlıklı olun.  Adımları takip ederek planınızı oluşturun. </p>
+        </header>
+
+        <div id="plan-content" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8">
+            <!-- Section 1: Household Risk Assessment -->
+            <div class="mb-8 border-b border-gray-200 dark:border-gray-700 pb-6">
+                <h2 class="text-2xl font-semibold mb-4 text-blue-600 dark:text-blue-400">1. Hane Bazlı Risk Değerlendirmesi</h2>
+                <p class="mb-4 text-gray-600 dark:text-gray-400">Bölgenizde ve evinizde karşılaşabileceğiniz olası acil durumları ve bunlara karşı alacağınız önlemleri belirtin.</p>
+                <div class="grid grid-cols-1 md: grid-cols-2 gap-6">
+                    <div>
+                        <label for="risk-deprem" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Deprem</label>
+                        <textarea id="risk-deprem" rows="4" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500" placeholder="Örn: Sağlam eşyaların yanına çök-kapan-tutun.  Tehlikeli eşyaları sabitle. "></textarea>
+                    </div>
+                    <div>
+                        <label for="risk-sel" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sel / Su Baskını</label>
+                        <textarea id="risk-sel" rows="4" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500" placeholder="Örn: Elektrik ve su vanalarını kapat.  Yüksek bir yere çık. "></textarea>
+                    </div>
+                    <div>
+                        <label for="risk-yangin" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Yangın</label>
+                        <textarea id="risk-yangin" rows="4" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500" placeholder="Örn: Yangın söndürücü kullan.  En yakın çıkıştan dışarı çık.  Duman varsa sürünerek ilerle."></textarea>
+                    </div>
+                    <div>
+                        <label for="risk-diger" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Diğer Olası Riskler</label>
+                        <textarea id="risk-diger" rows="4" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark: bg-gray-700 focus: ring-blue-500 focus: border-blue-500" placeholder="Örn: Fırtına, heyelan, vb. için alınacak önlemler... "></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Communication Network and Roles -->
+            <div class="mb-8 border-b border-gray-200 dark:border-gray-700 pb-6">
+                <h2 class="text-2xl font-semibold mb-4 text-blue-600 dark:text-blue-400">2. İletişim Ağı ve Roller</h2>
+                <p class="mb-4 text-gray-600 dark:text-gray-400">Acil durumda haberleşeceğiniz kişilerin bilgilerini ve aile bireylerinin görevlerini belirleyin.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark: border-gray-600">
+                        <h3 class="font-semibold mb-2">Acil Durum Kişisi 1</h3>
+                        <input type="text" placeholder="Adı Soyadı" class="w-full p-2 mb-2 border rounded-md bg-white dark:bg-gray-800">
+                        <input type="text" placeholder="Telefon Numarası" class="w-full p-2 mb-2 border rounded-md bg-white dark:bg-gray-800">
+                        <input type="text" placeholder="Yakınlık Derecesi (Örn:  Komşu)" class="w-full p-2 border rounded-md bg-white dark: bg-gray-800">
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
+                        <h3 class="font-semibold mb-2">Acil Durum Kişisi 2</h3>
+                        <input type="text" placeholder="Adı Soyadı" class="w-full p-2 mb-2 border rounded-md bg-white dark:bg-gray-800">
+                        <input type="text" placeholder="Telefon Numarası" class="w-full p-2 mb-2 border rounded-md bg-white dark:bg-gray-800">
+                        <input type="text" placeholder="Yakınlık Derecesi (Örn: Akraba)" class="w-full p-2 border rounded-md bg-white dark:bg-gray-800">
+                    </div>
+                </div>
+                <div>
+                    <label for="out-of-state-contact" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Şehir Dışı Bağlantı Kişisi</label>
+                    <textarea id="out-of-state-contact" rows="3" class="w-full p-2 border border-gray-300 dark: border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500" placeholder="Herkesin durumunu bildireceği, afet bölgesinin dışında yaşayan bir yakınınızın adı, telefonu ve adresi. "></textarea>
+                </div>
+                <div class="mt-4">
+                    <label for="family-roles" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Aile İçi Görev Dağılımı</label>
+                    <textarea id="family-roles" rows="4" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500" placeholder="Örn: Ahmet - Su vanasını kapatır.  Ayşe - Acil durum çantasını alır. Mehmet - Evcil hayvanı alır. "></textarea>
+                </div>
+            </div>
+
+            <!-- Section 3: Meeting Points & Shelter Planning -->
+            <div>
+                <h2 class="text-2xl font-semibold mb-4 text-blue-600 dark:text-blue-400">3. Toplanma Noktaları ve Barınak Planı</h2>
+                <p class="mb-4 text-gray-600 dark:text-gray-400">Acil durum sonrası ailenizle bir araya geleceğiniz güvenli yerleri belirleyin.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="meeting-point-indoor" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ev İçi Güvenli Nokta</label>
+                        <textarea id="meeting-point-indoor" rows="3" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500" placeholder="Örn: Koridordaki sağlam kolonun yanı. "></textarea>
+                    </div>
+                    <div>
+                        <label for="meeting-point-neighborhood" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mahalle İçi Toplanma Noktası</label>
+                        <textarea id="meeting-point-neighborhood" rows="3" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500" placeholder="Örn: Evin karşısındaki parkın girişindeki çeşme."></textarea>
+                    </div>
+                    <div>
+                        <label for="meeting-point-regional" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bölge Dışı (Uzak) Toplanma Noktası</label>
+                        <textarea id="meeting-point-regional" rows="3" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark: bg-gray-700 focus: ring-blue-500 focus: border-blue-500" placeholder="Mahalleye dönemeyecek durumda olursanız buluşacağınız yer.  Örn: Teyzemin evi."></textarea>
+                    </div>
+                    <div>
+                        <label for="shelter-plan" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Barınma Planı</label>
+                        <textarea id="shelter-plan" rows="3" class="w-full p-2 border border-gray-300 dark: border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500" placeholder="Evinize dönemezseniz nerede kalacaksınız? Örn: Akrabalar, arkadaşlar veya resmi barınma alanları."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Button -->
+        <div class="mt-8 text-center no-print">
+            <button id="download-pdf-btn" class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <svg id="download-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <div id="loader" class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-5 w-5 mr-2 hidden"></div>
+                <span id="button-text">Planı PDF Olarak İndir</span>
+            </button>
+        </div>
+
+        <footer class="text-center mt-12 text-sm text-gray-500 dark:text-gray-400 no-print">
+            <p>&copy; 2025 Aile Güvenliği Planlayıcısı. Her zaman hazırlıklı olun.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('download-pdf-btn').addEventListener('click', function() {
+            const downloadButton = this;
+            const buttonText = document.getElementById('button-text');
+            const downloadIcon = document.getElementById('download-icon');
+            const loader = document.getElementById('loader');
+
+            buttonText.textContent = 'Plan Oluşturuluyor...';
+            downloadIcon.classList.add('hidden');
+            loader.classList.remove('hidden');
+            downloadButton.disabled = true;
+
+            const planContent = document.getElementById('plan-content');
+
+            html2canvas(planContent, { scale: 2, useCORS: true }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal. pageSize.getHeight();
+                const canvasWidth = canvas.width;
+                const canvasHeight = canvas. height;
+                const ratio = canvasWidth / canvasHeight;
+
+                let imgWidth = pdfWidth - 20;
+                let imgHeight = imgWidth / ratio;
+                let heightLeft = imgHeight;
+                let position = 10;
+
+                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                heightLeft -= (pdfHeight - 20);
+
+                while (heightLeft > 0) {
+                    position = heightLeft - imgHeight + 10;
+                    pdf. addPage();
+                    pdf. addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                    heightLeft -= (pdfHeight - 20);
+                }
+
+                pdf.save('aile-acil-durum-plani.pdf');
+
+                setTimeout(() => {
+                    buttonText.textContent = 'Planı PDF Olarak İndir';
+                    downloadIcon. classList.remove('hidden');
+                    loader.classList.add('hidden');
+                    downloadButton.disabled = false;
+                }, 1000);
+            }).catch(err => {
+                console.error("PDF oluşturulurken bir hata oluştu:", err);
+                buttonText.textContent = 'Hata Oluştu, Tekrar Deneyin';
+                downloadIcon.classList.remove('hidden');
+                loader.classList.add('hidden');
+                downloadButton. disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
