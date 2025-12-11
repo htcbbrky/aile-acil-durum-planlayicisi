@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Family Emergency Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd. min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        @media print { body { -webkit-print-color-adjust:  exact; } . no-print { display: none; } }
+        .loader { border-top-color: #3498db; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <div class="container mx-auto p-4 sm:p-6 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-600 dark:text-blue-400">Family Emergency Planner</h1>
+            <p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Be prepared for your family's safety.  Follow the steps to create your plan.</p>
+        </header>
+
+        <div id="plan-content" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8">
+            <div class="mb-8 border-b border-gray-200 dark:border-gray-700 pb-6">
+                <h2 class="text-2xl font-semibold mb-4 text-blue-600 dark:text-blue-400">1. Household Risk Assessment</h2>
+                <p class="mb-4 text-gray-600 dark:text-gray-400">Identify potential emergencies in your area and home, and the precautions you will take.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark: text-gray-300 mb-1">Earthquake</label>
+                        <textarea rows="4" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700" placeholder="Ex: Drop, cover, and hold on next to sturdy furniture. "></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Flood / Water Damage</label>
+                        <textarea rows="4" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark: bg-gray-700" placeholder="Ex: Turn off electricity and water valves.  Move to higher ground."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark: text-gray-300 mb-1">Fire</label>
+                        <textarea rows="4" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700" placeholder="Ex:  Use a fire extinguisher. Exit through the nearest exit."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Other Possible Risks</label>
+                        <textarea rows="4" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700" placeholder="Ex: Precautions for storms, landslides, etc... "></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8 border-b border-gray-200 dark: border-gray-700 pb-6">
+                <h2 class="text-2xl font-semibold mb-4 text-blue-600 dark:text-blue-400">2. Communication Network and Roles</h2>
+                <p class="mb-4 text-gray-600 dark: text-gray-400">Define who to contact in an emergency and the roles of family members.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark: border-gray-600">
+                        <h3 class="font-semibold mb-2">Emergency Contact 1</h3>
+                        <input type="text" placeholder="Full Name" class="w-full p-2 mb-2 border rounded-md bg-white dark:bg-gray-800">
+                        <input type="text" placeholder="Phone Number" class="w-full p-2 mb-2 border rounded-md bg-white dark:bg-gray-800">
+                        <input type="text" placeholder="Relationship (Ex: Neighbor)" class="w-full p-2 border rounded-md bg-white dark: bg-gray-800">
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
+                        <h3 class="font-semibold mb-2">Emergency Contact 2</h3>
+                        <input type="text" placeholder="Full Name" class="w-full p-2 mb-2 border rounded-md bg-white dark:bg-gray-800">
+                        <input type="text" placeholder="Phone Number" class="w-full p-2 mb-2 border rounded-md bg-white dark:bg-gray-800">
+                        <input type="text" placeholder="Relationship (Ex:  Relative)" class="w-full p-2 border rounded-md bg-white dark:bg-gray-800">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Out-of-State Contact</label>
+                    <textarea rows="3" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700" placeholder="Name, phone, and address of a relative living outside the disaster area."></textarea>
+                </div>
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Family Role Assignments</label>
+                    <textarea rows="4" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700" placeholder="Ex: John - Turns off the water valve.  Jane - Grabs the emergency kit. "></textarea>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-semibold mb-4 text-blue-600 dark:text-blue-400">3. Meeting Points & Shelter Plan</h2>
+                <p class="mb-4 text-gray-600 dark:text-gray-400">Designate safe places to reunite with your family after an emergency.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Indoor Safe Spot</label>
+                        <textarea rows="3" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700" placeholder="Ex: Next to the sturdy column in the hallway."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Neighborhood Meeting Point</label>
+                        <textarea rows="3" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark: bg-gray-700" placeholder="Ex: The fountain at the park entrance."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Regional (Distant) Meeting Point</label>
+                        <textarea rows="3" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark: bg-gray-700" placeholder="A place to meet if you cannot return to your neighborhood."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Shelter Plan</label>
+                        <textarea rows="3" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700" placeholder="Where will you stay if you cannot return home?"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center no-print">
+            <button id="download-pdf-btn" class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-lg">
+                <svg id="download-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <div id="loader" class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-5 w-5 mr-2 hidden"></div>
+                <span id="button-text">Download Plan as PDF</span>
+            </button>
+        </div>
+
+        <footer class="text-center mt-12 text-sm text-gray-500 dark:text-gray-400 no-print">
+            <p>&copy; 2025 Family Safety Planner. Always be prepared.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('download-pdf-btn').addEventListener('click', function() {
+            const downloadButton = this;
+            const buttonText = document.getElementById('button-text');
+            const downloadIcon = document.getElementById('download-icon');
+            const loader = document.getElementById('loader');
+
+            buttonText.textContent = 'Generating Plan...';
+            downloadIcon.classList.add('hidden');
+            loader.classList.remove('hidden');
+            downloadButton.disabled = true;
+
+            html2canvas(document.getElementById('plan-content'), { scale: 2, useCORS: true }).then(canvas => {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const ratio = canvas.width / canvas.height;
+                let imgWidth = pdfWidth - 20;
+                let imgHeight = imgWidth / ratio;
+
+                pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+                pdf.save('family-emergency-plan.pdf');
+
+                setTimeout(() => {
+                    buttonText.textContent = 'Download Plan as PDF';
+                    downloadIcon.classList.remove('hidden');
+                    loader.classList.add('hidden');
+                    downloadButton.disabled = false;
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>
